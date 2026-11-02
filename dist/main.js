@@ -4547,7 +4547,8 @@
           p.vx *= 1.004;
           p.size += 0.06;
         }
-        const alpha = 1 - p.life / p.max;
+        const alpha = Math.max(0, 1 - p.life / p.max);
+        if (alpha <= 0) continue;
         x.save();
         x.globalAlpha = alpha * (p.kind === "smoke" ? 0.5 : 0.95);
         if (p.kind === "smoke") {
