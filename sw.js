@@ -1,8 +1,8 @@
 /**
  * Farm Fusion Service Worker — tam çevrimdışı oynanış.
- * Sürüm: 2.0.0 (package.json / src/version.ts / README ile aynı tutulmalı)
+ * Sürüm: 2.1.0 (package.json / src/version.ts / README ile aynı tutulmalı)
  */
-const CACHE = 'farm-fusion-v2.0.0';
+const CACHE = 'farm-fusion-v2.1.0';
 const ASSETS = [
   './', './index.html', './css/main.css', './dist/main.js', './manifest.webmanifest',
   './icons/favicon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png',
@@ -37,9 +37,10 @@ self.addEventListener('fetch', (e) => {
     }).catch(() => caches.match(e.request)));
     return;
   }
-  // diğerleri: önbellek önceli — ?v=2.0.0 sorgusu eşleşmeyi bozmasın
+  // diğerleri: önbellek önceli — ?v= sürüm etiketi TAM eşleşir;
+  // yeni sürüm asla eski önbellekten servis edilmez
   e.respondWith(
-    caches.match(e.request, { ignoreSearch: true }).then((hit) => hit || fetch(e.request).then((r) => {
+    caches.match(e.request).then((hit) => hit || fetch(e.request).then((r) => {
       const copy = r.clone();
       caches.open(CACHE).then((c) => c.put(e.request, copy));
       return r;

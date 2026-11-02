@@ -67,6 +67,7 @@ body {
   font-family: var(--f-body); font-weight: 600; font-size: 14px; line-height: 1.45;
   color: var(--on-surface); background: var(--surface);
   user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -webkit-touch-callout: none;
 }
 img { -webkit-user-drag: none; }
 button { font-family: inherit; border: none; cursor: pointer; background: none; color: inherit; touch-action: manipulation; }
@@ -104,7 +105,7 @@ input { font-family: inherit; }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
 
 .icon-btn {
-  width: 40px; height: 40px; border-radius: 999px; background: var(--surface-c);
+  width: 44px; height: 44px; border-radius: 999px; background: var(--surface-c);
   display: inline-flex; align-items: center; justify-content: center; color: var(--on-surface-v);
   box-shadow: inset 0 2px 4px rgba(128,85,51,.15); flex-shrink: 0;
   transition: transform .12s;
@@ -186,7 +187,7 @@ input { font-family: inherit; }
 .fusion-btn .fb-lbl { font-size: 13px; letter-spacing: .06em; text-shadow: 0 2px 0 rgba(0,0,0,.18); }
 .fusion-btn .fb-e { font-size: 10px; font-weight: 700; opacity: .92; }
 .bdg { position: absolute; top: -6px; right: -4px; min-width: 19px; height: 19px; border-radius: 999px; background: #e96a5c; color: #fff; font-family: var(--f-display); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; padding: 0 5px; box-shadow: 0 0 0 2.5px var(--surface-cl); }
-.side-btns { position: absolute; right: 10px; bottom: 118px; display: flex; flex-direction: column; gap: 10px; }
+.side-btns { position: absolute; right: 10px; bottom: calc(118px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
 .side-btn { position: relative; width: 48px; height: 48px; border-radius: 999px; background: var(--surface-cl); color: var(--on-surface-v); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 0 #d7ccc8, 0 8px 14px rgba(78,52,46,.14); }
 .side-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #d7ccc8; }
 .side-btn svg { width: 22px; height: 22px; }
@@ -642,3 +643,18 @@ input { font-family: inherit; }
 /* ikon-buton (↻ yenileme vb.) */
 .btn.icon-only { display: inline-flex; align-items: center; justify-content: center; padding: 7px 0; }
 .btn.icon-only svg { width: 16px; height: 16px; display: block; }
+
+/* ═══════════ v2.1.0 — PREMIUM iOS KATMANI ═══════════ */
+/* Odak halkası — erişilebilirlik + klavye */
+button:focus-visible, .tab:focus-visible { outline: 3px solid rgba(100,169,92,.6); outline-offset: 2px; }
+/* Sayılar sabit genişlik — sayaç titremesini yok eder */
+.cur-pill, .lvl-num, .oc-reward, .sc-cost, .dc-meta { font-variant-numeric: tabular-nums; }
+/* Yaylı mikro-geribildirim — doğal dokunma hissi (iOS yayı) */
+.btn, .icon-btn, .dock-btn, .side-btn, .seed-card, .decor-card, .recipe-card, .tab { transition-timing-function: cubic-bezier(.34,1.56,.64,1); transition-duration: .18s; }
+.btn:active, .dock-btn:active, .side-btn:active { transform: translateY(3px) scale(.985); }
+.icon-btn:active, .seed-card:active, .decor-card:active, .recipe-card:active { transform: translateY(2px) scale(.985); }
+/* Kartlara yumuşak ortam gölgesi — katmanlı derinlik */
+.seed-card, .order-card, .barn-item, .quest-row, .mu-row, .qjob, .recipe-card, .animal-card, .pen-hero, .exp-card, .mub-main, .mub-frag, .decor-card { box-shadow: 0 3px 0 #d7ccc8, 0 12px 26px rgba(78,52,46,.10); }
+/* HUD: çentik / ev çizgisi güvenli alanları */
+.hud-top { padding-top: max(env(safe-area-inset-top), 6px); }
+.hud-bottom { padding-bottom: max(env(safe-area-inset-bottom), 14px); }

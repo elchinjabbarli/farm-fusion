@@ -2,7 +2,7 @@
   "name": "Farm Fusion",
   "short_name": "FarmFusion",
   "description": "Büyükbaba Felix'in çiftliğinde ek, üret, birleştir! 2D merge + çiftlik oyunu.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
