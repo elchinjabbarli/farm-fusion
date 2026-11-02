@@ -1,17 +1,32 @@
 {
   "name": "Farm Fusion",
   "short_name": "FarmFusion",
-  "description": "Büyükbaba Felix'in çiftliğinde ek, üret, birleştir! 2.5D merge + çiftlik oyunu.",
-  "version": "1.0.0",
+  "description": "Büyükbaba Felix'in çiftliğinde ek, üret, birleştir! 2D merge + çiftlik oyunu.",
+  "version": "2.0.0",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#fff8f0",
-  "theme_color": "#3c6a00",
+  "background_color": "#f7f3e8",
+  "theme_color": "#35693b",
   "icons": [
-    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
