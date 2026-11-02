@@ -1,0 +1,4 @@
+# Fontlar: Google Fonts (Comfortaa & Quicksand) — SIL Open Font License
+# Kaynak: https://fonts.google.com/specimen/Comfortaa  https://fonts.google.com/specimen/Quicksand
+# Comfortaa: Copyright (c) 2011 by Johan Aakerlund. Quicksand: Copyright (c) 2011 by Andrew Paglinawan.
+# Lisans: https://openfontlicense.org/
