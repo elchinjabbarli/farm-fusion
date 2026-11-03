@@ -1,8 +1,8 @@
 /**
  * Farm Fusion Service Worker — tam çevrimdışı oynanış.
- * Sürüm: 2.1.0 (package.json / src/version.ts / README ile aynı tutulmalı)
+ * Sürüm: 3.0.0 (package.json / src/version.ts / README ile aynı tutulmalı)
  */
-const CACHE = 'farm-fusion-v2.1.0';
+const CACHE = 'farm-fusion-v3.0.0';
 const ASSETS = [
   './', './index.html', './css/main.css', './dist/main.js', './manifest.webmanifest',
   './icons/favicon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png',
