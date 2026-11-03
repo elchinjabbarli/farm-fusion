@@ -848,6 +848,10 @@
     st.plots[(cy - 3 + 1) * 10 + (cx - 3 + 1)] = { crop: "wheat", at: now - 3e4, dur: 12e4 };
     st.orders = [{ id: 1, npc: 0, items: [{ item: "wheat", qty: 6 }], coins: 150, xp: 45, express: false, expires: 0 }];
     st.orderSeq = 2;
+    st.board[13] = { c: "grain", t: 1 };
+    st.board[14] = { c: "grain", t: 1 };
+    st.board[23] = { c: "grain", t: 2 };
+    st.board[24] = { c: "dairy", t: 1 };
     return st;
   }
   function initialLocked(stage2) {
@@ -881,6 +885,8 @@
       if (!s.board || s.board.length !== BOARD_CELLS) s.board = newGame().board;
       if (!s.plots || s.plots.length !== 100) s.plots = newGame().plots;
       if (!s.lastCrop) s.lastCrop = "wheat";
+      const chainIds = new Set(CHAINS.map((c) => c.id));
+      s.board = s.board.map((it) => it && chainIds.has(it.c) && it.t >= 1 && it.t <= 6 ? it : null);
       s.settings = Object.assign({ sfx: true, music: true, haptic: true, lang: "tr" }, s.settings);
       s.stats = Object.assign({ merges: 0, harvests: 0, deliveries: 0, feeds: 0, gens: 0, collects: 0, fish: 0, sells: 0 }, s.stats);
       return s;
@@ -1357,17 +1363,27 @@
       x.stroke();
     }
   }
-  function shadow(x, cx, cy, rx, ry = rx * 0.36, a = 0.2) {
+  function shadow(x, cx, cy, rx, ry = rx * 0.36, a = 0.26) {
     const ox = rx * 0.16, oy = ry * 0.3;
     x.save();
     x.globalAlpha = a;
     const g = x.createRadialGradient(cx + ox, cy + oy, rx * 0.1, cx + ox, cy + oy, rx);
     g.addColorStop(0, SHADOW_COL);
     g.addColorStop(0.7, SHADOW_COL);
-    g.addColorStop(1, "rgba(64,96,40,0)");
+    g.addColorStop(1, "rgba(44,74,34,0)");
     x.fillStyle = g;
     x.beginPath();
     x.ellipse(cx + ox, cy + oy, rx, ry, 0, 0, Math.PI * 2);
+    x.fill();
+    x.globalAlpha = Math.min(0.46, a * 1.4);
+    const ax = cx + ox * 0.45, ay = cy + oy * 0.45;
+    const g2 = x.createRadialGradient(ax, ay, rx * 0.03, ax, ay, rx * 0.5);
+    g2.addColorStop(0, SHADOW_AO);
+    g2.addColorStop(0.58, SHADOW_AO);
+    g2.addColorStop(1, "rgba(38,62,28,0)");
+    x.fillStyle = g2;
+    x.beginPath();
+    x.ellipse(ax, ay, rx * 0.58, ry * 0.58, 0, 0, Math.PI * 2);
     x.fill();
     x.restore();
   }
@@ -3417,7 +3433,7 @@
       }
     });
   }
-  var SS, P, SHADOW_COL, cache, TILE_W, TILE_H;
+  var SS, P, SHADOW_COL, SHADOW_AO, cache, TILE_W, TILE_H;
   var init_art = __esm({
     "src/art.ts"() {
       "use strict";
@@ -3476,7 +3492,8 @@
         sky: "#bfe8f5",
         ocean: "#4fa8d5"
       };
-      SHADOW_COL = "rgba(64, 96, 40, 0.20)";
+      SHADOW_COL = "rgba(44,74,34,0.21)";
+      SHADOW_AO = "rgba(38,62,28,0.30)";
       cache = /* @__PURE__ */ new Map();
       TILE_W = 96;
       TILE_H = 96;
@@ -4466,7 +4483,7 @@
   });
 
   // src/version.ts
-  var VERSION = "3.0.0";
+  var VERSION = "4.0.0";
 
   // src/main.ts
   init_core();
@@ -4964,15 +4981,15 @@
           const lw = spr.width / SS_GAME, lh = spr.height / SS_GAME;
           const bx = cxT * T2, by = cyT * T2 + 24;
           x.save();
-          x.translate(bx + lw * 0.1, by + 6);
-          x.scale(1, 0.34);
-          const bsg = x.createRadialGradient(0, 0, lw * 0.08, 0, 0, lw * 0.52);
-          bsg.addColorStop(0, "rgba(44,70,36,0.34)");
-          bsg.addColorStop(0.7, "rgba(44,70,36,0.20)");
-          bsg.addColorStop(1, "rgba(44,70,36,0)");
+          x.translate(bx + lw * 0.12, by + 7);
+          x.scale(1, 0.36);
+          const bsg = x.createRadialGradient(0, 0, lw * 0.08, 0, 0, lw * 0.56);
+          bsg.addColorStop(0, "rgba(40,66,32,0.46)");
+          bsg.addColorStop(0.62, "rgba(40,66,32,0.30)");
+          bsg.addColorStop(1, "rgba(40,66,32,0)");
           x.fillStyle = bsg;
           x.beginPath();
-          x.arc(0, 0, lw * 0.52, 0, Math.PI * 2);
+          x.arc(0, 0, lw * 0.56, 0, Math.PI * 2);
           x.fill();
           x.restore();
           x.drawImage(spr, bx - lw / 2, cyT * T2 - lh + 30, lw, lh);
@@ -4995,15 +5012,15 @@
             const lw = spr.width / SS_GAME, lh = spr.height / SS_GAME;
             const mcx = cxW, mby = (my + 1) * T2 + 22;
             x.save();
-            x.translate(mcx + lw * 0.1, mby + 6);
-            x.scale(1, 0.34);
-            const msg = x.createRadialGradient(0, 0, lw * 0.08, 0, 0, lw * 0.52);
-            msg.addColorStop(0, "rgba(44,70,36,0.32)");
-            msg.addColorStop(0.7, "rgba(44,70,36,0.18)");
-            msg.addColorStop(1, "rgba(44,70,36,0)");
+            x.translate(mcx + lw * 0.12, mby + 7);
+            x.scale(1, 0.36);
+            const msg = x.createRadialGradient(0, 0, lw * 0.08, 0, 0, lw * 0.56);
+            msg.addColorStop(0, "rgba(40,66,32,0.44)");
+            msg.addColorStop(0.62, "rgba(40,66,32,0.28)");
+            msg.addColorStop(1, "rgba(40,66,32,0)");
             x.fillStyle = msg;
             x.beginPath();
-            x.arc(0, 0, lw * 0.52, 0, Math.PI * 2);
+            x.arc(0, 0, lw * 0.56, 0, Math.PI * 2);
             x.fill();
             x.restore();
             x.drawImage(spr, cxW - lw / 2, (my + 1) * T2 - lh + 28, lw, lh);
@@ -5640,7 +5657,24 @@
     [4, 14, "rock"],
     [11, 14, "bush"],
     [8, 15, "flowers"],
-    [15, 3, "rock"]
+    [15, 3, "rock"],
+    // v4 derinlik halkası — ikinci katman doluluk (toprak asla kaplamaz: 0-2/13-15)
+    [2, 1, "rock"],
+    [13, 1, "bush"],
+    [2, 4, "flowers"],
+    [13, 4, "flowers"],
+    [2, 10, "bush"],
+    [13, 11, "rock"],
+    [0, 3, "bush"],
+    [15, 6, "flowers"],
+    [0, 11, "rock"],
+    [15, 12, "bush"],
+    [4, 2, "flowers"],
+    [11, 2, "rock"],
+    [4, 13, "bush"],
+    [11, 13, "flowers"],
+    [7, 15, "bush"],
+    [8, 0, "rock"]
   ];
   var AMBIENT = [
     [6, 3, "flowers"],
@@ -5652,7 +5686,16 @@
     [8, 12, "bush"],
     [12, 10, "rock"],
     [6, 4, "bush"],
-    [10, 9, "flowers"]
+    [10, 9, "flowers"],
+    // v4 iç dolgunluk — bina/yuva çakışmayan güvenli karolar
+    [3, 4, "flowers"],
+    [12, 3, "bush"],
+    [8, 3, "flowers"],
+    [10, 7, "bush"],
+    [3, 9, "flowers"],
+    [12, 12, "bush"],
+    [6, 9, "rock"],
+    [5, 12, "flowers"]
   ];
 
   // src/main.ts
@@ -7021,7 +7064,7 @@
       <div class="gen-tray" id="gen-tray"></div>
     </div>
     <div class="sell-zone" id="sell-zone">
-      <div class="sz-ico">\u{1FA99}</div><div class="sz-lbl">${T("m.sellZone")}</div>
+      <div class="sz-ico">${SVG2.coins}</div><div class="sz-lbl">${T("m.sellZone")}</div>
     </div>
     <div class="fusion-modal hidden" id="artifact-modal"></div>
   `;
@@ -7056,7 +7099,14 @@
   }
   var SVG2 = {
     close: `<svg viewBox="0 0 24 24" width="22" height="22"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>`,
-    lock: `<svg viewBox="0 0 24 24" width="18" height="18"><rect x="5" y="10" width="14" height="10" rx="3" fill="currentColor"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>`
+    lock: `<svg viewBox="0 0 24 24" width="18" height="18"><rect x="5" y="10" width="14" height="10" rx="3" fill="currentColor"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="2.4" fill="none"/></svg>`,
+    // SAT tepsisi — para yığını (banka/müze glifi değil)
+    coins: `<svg viewBox="0 0 24 24" width="34" height="34">
+    <ellipse cx="12" cy="17.6" rx="8.4" ry="3.4" fill="#c98f1e"/><ellipse cx="12" cy="16.6" rx="8.4" ry="3.4" fill="#f2c94c"/><ellipse cx="12" cy="17" rx="5.6" ry="2.2" fill="#e8b630"/>
+    <ellipse cx="12" cy="13.4" rx="8.4" ry="3.4" fill="#c98f1e"/><ellipse cx="12" cy="12.4" rx="8.4" ry="3.4" fill="#f7d35c"/><ellipse cx="12" cy="12.8" rx="5.6" ry="2.2" fill="#eec23a"/>
+    <ellipse cx="12" cy="9.2" rx="8.4" ry="3.4" fill="#c98f1e"/><ellipse cx="12" cy="8.2" rx="8.4" ry="3.4" fill="#ffdf7e"/><ellipse cx="12" cy="8.6" rx="5.6" ry="2.2" fill="#f2c94c"/>
+    <ellipse cx="9.4" cy="7.6" rx="1.7" ry="0.7" fill="#fff3c4" opacity=".9"/>
+  </svg>`
   };
   function stage() {
     return BOARD_STAGES[state.boardStage];
